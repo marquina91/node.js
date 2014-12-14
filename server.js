@@ -1,8 +1,10 @@
-var http = require('http');
+var express = require('express');
+var app = express.createServer();
+ 
+app.get('/', function(req, res){
+  res.send('Hola mundo');
+});
+ 
+app.listen(1333);
 
-http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('servidor creado\n');
-}).listen(8080);
-
-console.log('Server listen to the port 8080');
+console.log('Server listen to the port 1333');
