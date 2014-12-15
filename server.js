@@ -3,11 +3,12 @@ console.log('Servidor Iniciado.');
  
  
 net.createServer(function (socket) {
-        console.log("New connection");
- 
-        socket.on('data', function (data) {
+    console.log("Nueva conexion");
+    socket.on('data', function (data) { 
                 console.log(data.toString("utf-8"));   
                 socket.write("97");
-        });
- 
-}).listen(8888, '192.168.1.104');
+    });
+    socket.on('disconnect', function(){
+        console.log('Se ha desconectado un cliente.');
+    });
+}).listen(process.env.PORT,process.env.IP);
