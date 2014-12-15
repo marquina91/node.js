@@ -1,10 +1,13 @@
-var express = require('express');
-var app = express.createServer();
+var net = require('net');
+console.log('Servidor Iniciado.');
  
-app.get('/', function(req, res){
-  res.send('Hola mundo');
-});
  
-app.listen(1333);
-
-console.log('Server listen to the port 1333');
+net.createServer(function (socket) {
+        console.log("New connection");
+ 
+        socket.on('data', function (data) {
+                console.log(data.toString("utf-8"));   
+                socket.write("97");
+        });
+ 
+}).listen(8888, '192.168.1.104');
