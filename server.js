@@ -1,14 +1,43 @@
-var net = require('net');
-console.log('Servidor Iniciado.');
- 
- 
-net.createServer(function (socket) {
-    console.log("Nueva conexion");
-    socket.on('data', function (data) { 
-                console.log(data.toString("utf-8"));   
-                socket.write("97");
+var os=require('os');
+var net=require('net');
+
+var networkInterfaces=os.networkInterfaces();
+
+//var port = 8080;
+var count = 1;
+
+function servidor(socket){
+    var remoteAddress = socket.remoteAddress;
+    var remotePort = socket.remotePort;
+    socket.setNoDelay(true);
+    console.log("connected: ", remoteAddress, " : ", remotePort);
+    
+    var msg = 'Hello ' + remoteAddress + ' : ' +  remotePort + '\r\n'
+        + "You are #" + count + '\r\n';
+    count++;
+
+    socket.end(msg);
+    
+    socket.on('data', function (data) {
+        console.log(data.toString());
     });
-    socket.on('disconnect', function(){
-        console.log('Se ha desconectado un cliente.');
+    
+    socket.on('end', function () {
+        console.log("ended: ", remoteAddress, " : ", remotePort);
     });
-}).listen(process.env.PORT,process.env.IP);
+}
+
+console.log("Servidor en espera:");
+for (var interface in networkInterfaces) {
+
+    networkInterfaces[interface].forEach(function(details){
+        
+        if ((details.family=='IPv4') && !details.internal) {
+            console.log(interface, details.address);  
+        }
+    });
+}
+
+console.log("puerto: ", process.env.PORT);
+var netServer = net.createServer(servidor);
+netServer.listen(process.env.PORT);
