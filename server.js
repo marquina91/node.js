@@ -3,7 +3,7 @@ var net=require('net');
 
 var networkInterfaces=os.networkInterfaces();
 
-//var port = 8080;
+var port = 8080;
 var count = 1;
 
 function servidor(socket){
@@ -38,6 +38,6 @@ for (var interface in networkInterfaces) {
     });
 }
 
-console.log("puerto: ", process.env.PORT);
+console.log("puerto: ", port);
 var netServer = net.createServer(servidor);
-netServer.listen(process.env.PORT);
+netServer.listen(port);
